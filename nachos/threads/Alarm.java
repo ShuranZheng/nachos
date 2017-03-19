@@ -31,10 +31,11 @@ public class Alarm {
      */
     public void timerInterrupt() {
     boolean intStatus = Machine.interrupt().disable();
-    WaitingThread thread = waitingQueue.poll();
+    WaitingThread thread = waitingQueue.peek();
     while (thread != null && thread.time <= Machine.timer().getTime()){
     	thread.thread.ready();
-    	thread = waitingQueue.poll();
+    	waitingQueue.poll();
+    	thread = waitingQueue.peek();
     }
     Machine.interrupt().restore(intStatus);
     KThread.currentThread().yield();
@@ -84,5 +85,5 @@ public class Alarm {
 		}
     }
     
-    private PriorityQueue<WaitingThread> waitingQueue;
+    private PriorityQueue<WaitingThread> waitingQueue = new PriorityQueue<WaitingThread>();
 }
