@@ -1,6 +1,7 @@
 package nachos.threads;
 
 import nachos.machine.*;
+import nachos.testcase.*;
 
 /**
  * A multi-threaded OS kernel.
@@ -46,41 +47,15 @@ public class ThreadedKernel extends Kernel {
      * tests here.
      */	
     public void selfTest() {
-    	final KThread thread1 = new KThread(
-    			new Runnable(){
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						KThread.yield();
-						for (int i=1; i<10; i++) 
-							System.out.println(i);
-					}
-    				
-    			});
-    	KThread thread2 = new KThread(
-    			new Runnable(){
-
-					@Override
-					public void run() {
-						// TODO Auto-generated method stub
-						KThread.yield();						
-						thread1.join();
-						System.out.println("end");
-					}
-    				
-    			});
-    	thread2.fork();
-    	thread1.fork();
-    	thread1.join();
-    	thread2.join();
-    	System.out.println("123");
-	KThread.selfTest();
+    
+    //CommunicatorTest.selfTest(new int[]{0,1,0,1,0,0,0,0,1,1,0,1,1,1});
+    Boat.selfTest();
+    /*	KThread.selfTest();
 	Semaphore.selfTest();
 	SynchList.selfTest();
 	if (Machine.bank() != null) {
 	    ElevatorBank.selfTest();
-	}
+	}*/
     }
     
     /**
