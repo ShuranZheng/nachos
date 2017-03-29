@@ -1,7 +1,6 @@
 package nachos.threads;
 
 import nachos.machine.*;
-import nachos.testcase.*;
 
 /**
  * A multi-threaded OS kernel.
