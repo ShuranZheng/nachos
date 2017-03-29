@@ -102,27 +102,27 @@ public class Boat {
 		for (;;) {
 			lock.acquire();
 			oahu.kid.sleep();
-			while (oahu.kidsNum < 2 && oahu.adultsNum > 0 && !pilot)
+			while (oahu.kidsNum < 2 && oahu.adultsNum > 0 && !waiting)
 				oahu.kid.sleep();
-			if (!pilot) {
+			if (waiting){
+				oahu.kidsNum--;
+				bg.ChildRideToMolokai();
+				molokai.kidsNum++;
+				waiting = false;
+				arrived.sleep();
+				waitingCond.wake();
+			}
+			else {
 				oahu.kidsNum--;
 				bg.ChildRowToMolokai();
 				if (oahu.kidsNum > 0) {
-					pilot = true;
+					waiting = true;
 					oahu.kid.wake();
-					pilotCond.sleep();
+					waitingCond.sleep();
 					molokai.kidsNum++;
 					arrived.sleep();
 					molokai.kid.wake();
 				}
-			}
-			else {
-				pilot = false;
-				oahu.kidsNum--;
-				bg.ChildRideToMolokai();
-				molokai.kidsNum++;
-				arrived.sleep();
-				pilotCond.wake();
 			}
 			molokai.kid.sleep();
 			molokai.kidsNum--;
@@ -157,9 +157,9 @@ public class Boat {
 	
 	private static Location oahu = new Location(), molokai = new Location();
 	
-	private static boolean pilot = false;
+	private static boolean waiting = false;
 	
-	private static Condition pilotCond = new Condition(lock), arrived = new Condition(lock);
+	private static Condition waitingCond = new Condition(lock), arrived = new Condition(lock);
 
 	
 }
